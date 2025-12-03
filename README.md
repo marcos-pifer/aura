@@ -10,17 +10,15 @@ rag_service.py --prompt "hello world" --top_k=10
 
 
 Transcript service notes
-c1 -> [0, 30]
-c2 -> [30, 60]
 
-transcript(c1):
-{
-    c1:[
-        ('bip bop boop', [0,20])
-        ('foo', [20,30])
-    ],
-    c2:[
-        ('foo ter zer', [0,20]) # real = (c2.start + ts[0], c2.start + ts[1])
-        ('zai', [20,30]) 
-    ]
-} }
+
+
+
+
+AudioHandler:
+
+The normal speech speed for a technical/academic context talk is 100-140 words
+per minute (wpm). Since we want to construct context, we want to have text lengths
+of between 256 and 512 tokens. For performance purposes we wan to have 256 tokens,
+this implies audio chunks of between 1.8 and 2.5 minutes (108 to 150 seconds).
+
