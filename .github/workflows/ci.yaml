@@ -21,6 +21,9 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: perform linux setup
+      run: bash setup.sh
+
     - name: Install dependencies
       run: pip install -r requirements.txt
 
