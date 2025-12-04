@@ -21,6 +21,8 @@ class AudioHandler:
     
     def __init__(self, file_path:Path = None):
         self.file_path = file_path
+        self.file_name = self._get_file_name(file_path)
+        self.file_extension = self._get_file_extension(file_path) 
         self.chunks = None
 
     def execute(self):
@@ -29,12 +31,25 @@ class AudioHandler:
         
         self.chunks = self._split_audio(
             audio, length_seconds=CHUNK_SPLIT_LENGTH_SECONDS)
+        
+        self._save_chunks_to_disk()
 
     def get_audio_chunks(self):
         return self.chunks
+    
+    def _get_file_name(self,file_path:Path):
+        return file_path.stem if file_path else "unknown"
+    
+    def _get_file_extension(self,file_path:Path):
+        ext = (
+            file_path.suffix.replace(".", "")
+            if file_path else "mp3"
+        )
+        return ext
 
     def _read_file(self):
-        return AudioSegment.from_file(self.file_path, format="mp3")
+        return AudioSegment.from_file(
+            self.file_path, format=self.file_extension)
 
     def _split_audio(self, audio: AudioSegment, length_seconds:int):
 
@@ -56,3 +71,15 @@ class AudioHandler:
             chunks.append(chunk_info)
         
         return chunks
+    
+    def _save_chunks_to_disk(self):
+        Path(AUDIO_CHUNKS_DIR).mkdir(parents=True, exist_ok=True)
+
+        for chunk_info in self.chunks:
+            
+            chunk_path = Path(
+                AUDIO_CHUNKS_DIR) / f"{self.file_name}_" \
+                    f"{chunk_info.index}_of_{chunk_info.total_chunks}" \
+                    f".{self.file_extension}"
+            
+            chunk_info.chunk.export(chunk_path, format=self.file_extension)
