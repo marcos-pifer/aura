@@ -1,0 +1,5 @@
+/notes
+/venv
+__pycache__/
+*.dtmp
+.vscode/
