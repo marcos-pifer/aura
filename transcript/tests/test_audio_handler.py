@@ -35,8 +35,8 @@ def test_splits_audio():
     
     #THEN
     assert len(chunks) > 0
-    for _, chunk in chunks.items():
-        assert chunk.duration_seconds <= chunk_duration_seconds
+    for chunk_info in chunks:
+        assert chunk_info.chunk.duration_seconds <= chunk_duration_seconds
 
 def test_executes_audio_handler():
     from transcript.audio_handler import AudioHandler
