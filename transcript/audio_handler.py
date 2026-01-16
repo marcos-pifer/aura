@@ -38,10 +38,9 @@ CHUNK_SPLIT_LENGTH_SECONDS = 10
 def log(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        logger.info(f"called {func.__name__}")
-        # logging.info(f"Arguments: args={args}, kwargs={kwargs}")
+        class_name = args[0].__class__.__name__ if args and hasattr(args[0], '__class__') else ''
+        logger.info(f"called {class_name}.{func.__name__}")
         result = func(*args, **kwargs)
-        # logging.debug(f"Return value: {result}")
         return result
     return wrapper
 
