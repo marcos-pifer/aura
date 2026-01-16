@@ -7,10 +7,28 @@ from functools import wraps
 from pydub import AudioSegment
 
 
-logging.basicConfig(
-    level=logging.DEBUG,  # or INFO, as needed
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+
+MODULE = __file__.split('.')[0].split('/')[-1] 
+
+def get_logger(level=logging.INFO):
+    handler = logging.StreamHandler()
+    handler.setLevel(level)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(f"{MODULE}")
+    logger.setLevel(level)
+    logger.addHandler(handler)
+    return logger
+
+def set_log_level(log_level_str: str):
+    numeric_level = getattr(logging, log_level_str.strip().upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f'Invalid log level: {log_level_str}')
+    logger.setLevel(numeric_level)
+
+logger = get_logger(logging.INFO)
+
 
 
 AUDIO_CHUNKS_DIR = "audio_chunks/"
@@ -20,7 +38,7 @@ CHUNK_SPLIT_LENGTH_SECONDS = 10
 def log(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        logging.debug(f"called {func.__name__}")
+        logger.info(f"called {func.__name__}")
         # logging.info(f"Arguments: args={args}, kwargs={kwargs}")
         result = func(*args, **kwargs)
         # logging.debug(f"Return value: {result}")
@@ -129,11 +147,12 @@ def main():
 
     args = parser.parse_args()
 
-    numeric_level = getattr(logging, args.log.upper(), None)
-    if not isinstance(numeric_level, int):
-        raise ValueError(f'Invalid log level: {args.log}')
+
+    set_log_level(args.log)
+
     
-    logging.info(f"Arguments: {args}")
+    
+    logger.info(f"Arguments: {args}")
 
     audio_handler = AudioHandler(file_path=Path(args.input))
     audio_handler.execute()
