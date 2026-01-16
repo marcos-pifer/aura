@@ -22,3 +22,10 @@ per minute (wpm). Since we want to construct context, we want to have text lengt
 of between 256 and 512 tokens. For performance purposes we wan to have 256 tokens,
 this implies audio chunks of between 1.8 and 2.5 minutes (108 to 150 seconds).
 
+
+
+
+
+## RUN TRANSCRIPT SERVICE
+
+python transcript/audio_handler.py -i transcript/tests/test_data/me_at_the_zoo.mp3 -l INFO
