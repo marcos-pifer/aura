@@ -4,13 +4,12 @@ from dataclasses import dataclass
 
 from utils.logger import get_logger, set_log_level, log_wrapper
 from pydub import AudioSegment
+from config import AUDIO_CHUNKS_DIR, CHUNK_SPLIT_LENGTH_SECONDS
 
 
 #### CONSTANTS ####
 
 MODULE = __file__.split('.')[0].split('/')[-1]
-AUDIO_CHUNKS_DIR = "audio_chunks/"
-CHUNK_SPLIT_LENGTH_SECONDS = 10
 
 logger = get_logger(MODULE, logging.INFO)
 

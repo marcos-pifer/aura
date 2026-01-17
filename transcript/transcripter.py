@@ -3,13 +3,14 @@ import logging
 import whisper
 from utils.logger import log_wrapper, get_logger, set_log_level
 from dataclasses import dataclass
+from config import WHISPER_MODEL
 
 
 MODULE = __file__.split('.')[0].split('/')[-1]
 logger = get_logger(MODULE, logging.INFO)
 
 def load_whisper_model():
-    return whisper.load_model('small')
+    return whisper.load_model(WHISPER_MODEL)
 
 models = {
     "whisper": load_whisper_model

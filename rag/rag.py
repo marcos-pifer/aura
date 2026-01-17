@@ -14,3 +14,10 @@ results = collection.query(
 print("Top results:")
 for doc, meta in zip(results["documents"][0], results["metadatas"][0]):
     print(f"Text: {doc} | Metadata: {meta}")
+
+
+class RAGService:
+    def __init__(self, collection):
+        self.collection = collection
+
+        
