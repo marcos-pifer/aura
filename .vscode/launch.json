@@ -15,6 +15,18 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             }
+        },
+        {
+            "name": "Run RAG",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/rag/rag.py",
+            "args": [
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         }
     ]
 }

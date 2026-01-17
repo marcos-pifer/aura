@@ -22,7 +22,7 @@ class ChunkTranscriptInfo:
     file_path: str
     chunk_index: int
     text: str
-    mod_time: datetime
+    mod_time: str
     file_size: int
 
 class Transcripter:
@@ -37,7 +37,7 @@ class Transcripter:
             
             mod_time = file.stat().st_mtime
             file_size = file.stat().st_size
-            mod_datetime = datetime.fromtimestamp(mod_time)
+            mod_datetime = str(datetime.fromtimestamp(mod_time))
 
             trs = self.model.transcribe(str(file))
 
@@ -46,7 +46,7 @@ class Transcripter:
                 , file_path=str(file)
                 , chunk_index=index
                 , text=trs['text']
-                , mod_time=mod_datetime
+                , mod_time=str(mod_datetime)
                 , file_size=file_size
             )
 
