@@ -24,3 +24,9 @@ WHISPER_MODEL = "small"
 
 AUDIO_CHUNKS_DIR = "audio_chunks/"
 CHUNK_SPLIT_LENGTH_SECONDS = 10
+
+###############################################################################
+######## LLM CONFIGURATION
+###############################################################################
+
+LLM_MODEL = "llama3:8b"
