@@ -1,12 +1,16 @@
 import argparse
 import logging
 import glob
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from pathlib import Path
 
 from utils.logger import log_wrapper, get_logger, set_log_level
-from audio_handler import AudioHandler, AUDIO_CHUNKS_DIR
-from transcripter import Transcripter
 from utils.db_utils import insert_chunk, check_entry_exists
+
+from transcript.audio_handler import AudioHandler, AUDIO_CHUNKS_DIR
+from transcript.transcripter import Transcripter
 
 
 
