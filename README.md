@@ -29,3 +29,19 @@ this implies audio chunks of between 1.8 and 2.5 minutes (108 to 150 seconds).
 ## RUN TRANSCRIPT SERVICE
 
 python transcript/audio_handler.py -i transcript/tests/test_data/me_at_the_zoo.mp3 -l INFO
+
+
+## DATABASE INFORMATION
+
+./database/setup.py
+
+TABLE: transcriptions
+
+COLUMNS
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        file_name TEXT NOT NULL,
+        file_path TEXT NOT NULL,
+        chunk_index INTEGER,
+        transcription TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        metadata TEXT

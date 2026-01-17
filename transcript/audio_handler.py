@@ -1,49 +1,18 @@
-import argparse
-from html import parser
+import logging
 from pathlib import Path
 from dataclasses import dataclass
-import logging
-from functools import wraps
+
+from utils.logger import get_logger, set_log_level, log_wrapper
 from pydub import AudioSegment
 
 
+#### CONSTANTS ####
 
-MODULE = __file__.split('.')[0].split('/')[-1] 
-
-def get_logger(level=logging.INFO):
-    handler = logging.StreamHandler()
-    handler.setLevel(level)
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-
-    logger = logging.getLogger(f"{MODULE}")
-    logger.setLevel(level)
-    logger.addHandler(handler)
-    return logger
-
-def set_log_level(log_level_str: str):
-    numeric_level = getattr(logging, log_level_str.strip().upper(), None)
-    if not isinstance(numeric_level, int):
-        raise ValueError(f'Invalid log level: {log_level_str}')
-    logger.setLevel(numeric_level)
-
-logger = get_logger(logging.INFO)
-
-
-
+MODULE = __file__.split('.')[0].split('/')[-1]
 AUDIO_CHUNKS_DIR = "audio_chunks/"
 CHUNK_SPLIT_LENGTH_SECONDS = 10
 
-
-def log(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        class_name = args[0].__class__.__name__ if args and hasattr(args[0], '__class__') else ''
-        logger.info(f"called {class_name}.{func.__name__}")
-        result = func(*args, **kwargs)
-        return result
-    return wrapper
-
+logger = get_logger(MODULE, logging.INFO)
 
 
 @dataclass
@@ -57,14 +26,14 @@ class ChunkInfo:
 
 class AudioHandler:
     
-    @log
+    @log_wrapper(logger)
     def __init__(self, file_path:Path = None):
         self.file_path = file_path
         self.file_name = self._get_file_name(file_path)
         self.file_extension = self._get_file_extension(file_path) 
         self.chunks = None
 
-    @log
+    @log_wrapper(logger)
     def execute(self):
         
         audio = self._read_file()
@@ -74,15 +43,15 @@ class AudioHandler:
         
         self._save_chunks_to_disk()
 
-    @log
+    @log_wrapper(logger)
     def get_audio_chunks(self):
         return self.chunks
     
-    @log
+    @log_wrapper(logger)
     def _get_file_name(self,file_path:Path):
         return file_path.stem if file_path else "unknown"
     
-    @log
+    @log_wrapper(logger)
     def _get_file_extension(self,file_path:Path):
         ext = (
             file_path.suffix.replace(".", "")
@@ -90,12 +59,12 @@ class AudioHandler:
         )
         return ext
 
-    @log
+    @log_wrapper(logger)
     def _read_file(self):
         return AudioSegment.from_file(
             self.file_path, format=self.file_extension)
 
-    @log
+    @log_wrapper(logger)
     def _split_audio(self, audio: AudioSegment, length_seconds:int):
 
         chunk_length_ms = length_seconds * 1000
@@ -117,7 +86,7 @@ class AudioHandler:
         
         return chunks
     
-    @log
+    @log_wrapper(logger)
     def _save_chunks_to_disk(self):
         Path(AUDIO_CHUNKS_DIR).mkdir(parents=True, exist_ok=True)
 
@@ -132,30 +101,3 @@ class AudioHandler:
 
 
 
-def main():
-
-    parser = argparse.ArgumentParser(description="Example argument parser")
-    parser.add_argument(
-        '-i','--input', type=str, required=True
-        , help='Input file path'
-    )
-
-    parser.add_argument(
-        '-l','--log', type=str, default='INFO'
-        , help='Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)')
-
-    args = parser.parse_args()
-
-
-    set_log_level(args.log)
-
-    
-    
-    logger.info(f"Arguments: {args}")
-
-    audio_handler = AudioHandler(file_path=Path(args.input))
-    audio_handler.execute()
-
-
-if __name__ == "__main__":
-    main()

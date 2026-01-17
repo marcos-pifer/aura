@@ -20,7 +20,7 @@ def test_whisper_transcribes_me_at_the_zoo():
 
     #THEN
     assert len(results) == 1
-    assert len(results[0]) > 0
-    assert "really" in results[0]['text'].lower()
-    assert "elephants" in results[0]['text'].lower()
+    assert len(results[0].text) > 0
+    assert "really" in results[0].text.lower()
+    assert "elephants" in results[0].text.lower()
 
