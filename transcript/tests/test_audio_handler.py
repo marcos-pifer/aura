@@ -43,10 +43,18 @@ class TestAudioHandler:
         chunk_duration_seconds = 10
         audio_handler = AudioHandler(file_path=sample_audio_file)
         audio = audio_handler._read_file()
+        chunk_slots = {
+            "me_at_the_zoo_0_of_0" : {
+                "start_time_seconds": 0,
+                "end_time_seconds": 10},
+            "me_at_the_zoo_1_of_0" : {
+                "start_time_seconds": 10,
+                "end_time_seconds": len(audio)}
+        }
 
         #WHEN
         chunks = audio_handler._split_audio(
-            audio, length_seconds=chunk_duration_seconds)
+            audio, chunk_slots=chunk_slots)
         
         #THEN
         assert len(chunks) > 0

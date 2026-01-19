@@ -8,6 +8,10 @@ from utils.logger import get_logger
 MODULE = __file__.split('.')[0].split('/')[-1]
 logger = get_logger(MODULE, logging.INFO)
 
+
+
+
+
 def insert_chunk(chunk_info):
 
     # Connect to the database

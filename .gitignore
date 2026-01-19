@@ -3,3 +3,6 @@
 __pycache__/
 *.dtmp
 *.bkp
+vectorDB/
+*.mp3
+*.m4a

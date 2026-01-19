@@ -9,18 +9,12 @@ def test_whisper_transcribes_me_at_the_zoo():
 
     #GIVEN
     from transcript.transcripter import Transcripter
-
-    input_audio_paths = [sample_audio_file]
-
-    results = []
     transcripter = Transcripter(model_name="whisper")
 
     #WHEN
-    transcripter.execute(input_audio_paths, results)
+    result = transcripter.execute(sample_audio_file)
 
     #THEN
-    assert len(results) == 1
-    assert len(results[0].text) > 0
-    assert "really" in results[0].text.lower()
-    assert "elephants" in results[0].text.lower()
-
+    assert len(result.text) > 0
+    assert "really" in result.text.lower()
+    assert "elephants" in result.text.lower()
