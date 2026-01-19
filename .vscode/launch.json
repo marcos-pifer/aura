@@ -20,8 +20,10 @@
             "name": "Run RAG",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/rag/rag.py",
+            "program": "${workspaceFolder}/rag/rag_service.py",
             "args": [
+                "-i", "What is the main topic discussed in the documents?",
+                "-l", "DEBUG"
             ],
             "console": "integratedTerminal",
             "env": {

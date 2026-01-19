@@ -15,10 +15,12 @@ def get_logger(module_name, level=logging.INFO):
     return logger
 
 def set_log_level(logger, log_level_str: str):
-    numeric_level = getattr(logging, log_level_str.strip().upper(), None)
+    numeric_level = getattr(logging, log_level_str.strip().upper(), logging.INFO)
     if not isinstance(numeric_level, int):
         raise ValueError(f'Invalid log level: {log_level_str}')
     logger.setLevel(numeric_level)
+    for handler in logger.handlers:
+        handler.setLevel(numeric_level)
 
 def log_wrapper(logger):
     def decorator(func):

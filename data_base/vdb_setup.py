@@ -1,20 +1,17 @@
-from langchain.vectorstores import Chroma
-from langchain.embeddings import SentenceTransformerEmbeddings
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+
+
 from config import DATABASE_NAME, TABLE_NAME, SENTENCE_TRANSFORMER_MODEL
 
 
 def setup_vector_db():
-    # client = chromadb.PersistentClient(DATABASE_NAME)
 
-    # embed_fn = chromadb.utils.embedding_functions \
-    #     .SentenceTransformerEmbeddingFunction(model_name=SENTENCE_TRANSFORMER_MODEL)
-
-    # client.create_collection(
-    #     TABLE_NAME,
-    #     embedding_function=embed_fn
-    # )
-
-    embedding = SentenceTransformerEmbeddings(model_name=SENTENCE_TRANSFORMER_MODEL)
+    embedding = HuggingFaceEmbeddings(model_name=SENTENCE_TRANSFORMER_MODEL)
     persist_directory = DATABASE_NAME
 
     vectordb = Chroma(
