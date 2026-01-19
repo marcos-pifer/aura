@@ -10,7 +10,9 @@ from utils.logger import log_wrapper, get_logger, set_log_level
 from utils.vdb_utils import insert_chunk, check_entry_exists
 # from utils.db_utils import insert_chunk, check_entry_exists
 
-from transcript.audio_handler import AudioHandler, AUDIO_CHUNKS_DIR
+from transcript.audio_handler import AudioHandler
+from transcript.audio_handler import AUDIO_CHUNKS_DIR
+from transcript.audio_handler import SUPPORTED_AUDIO_EXTENSIONS
 from transcript.transcripter import Transcripter
 
 
@@ -26,10 +28,17 @@ class TranscriptService:
 
     @log_wrapper(logger)
     def execute(self, audio_file_path: str) -> str:
+
+
         
         audio_handler = AudioHandler(file_path=Path(audio_file_path))
         audio_handler.execute()
-        audio_chuncks_files = list(Path(AUDIO_CHUNKS_DIR).glob("*.mp3"))
+
+
+        audio_chuncks_files = []
+        for ext in SUPPORTED_AUDIO_EXTENSIONS:
+            audio_chuncks_files.extend(glob.glob(
+                f"{AUDIO_CHUNKS_DIR}/{audio_handler.file_name}*{ext}"))
 
         results = []
         transcripter = Transcripter(model_name="whisper")
@@ -50,7 +59,8 @@ class TranscriptService:
 
 def main():
 
-    parser = argparse.ArgumentParser(description=f"{MODULE} command line arguments")
+    parser = argparse.ArgumentParser(
+        description=f"{MODULE} command line arguments")
     parser.add_argument(
         '-i','--input', type=str, required=True
         , help='Input file path'

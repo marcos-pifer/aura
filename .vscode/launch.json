@@ -3,12 +3,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run audio_handler",
+            "name": "test audio_handler",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/transcript/transcript_service.py",
             "args": [
                 "-i", "transcript/tests/test_data/me_at_the_zoo.mp3",
+                "-l", "DEBUG"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "LECTURE AUDIO HANDLER",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/transcript/transcript_service.py",
+            "args": [
+                "-i", "lecture_recordings/29_10_25_TRANSFORMER.mp3",
                 "-l", "DEBUG"
             ],
             "console": "integratedTerminal",

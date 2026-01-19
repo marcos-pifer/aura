@@ -21,9 +21,9 @@ WHISPER_MODEL = "small"
 ###############################################################################
 ######## AUDIO HANDLER CONFIGURATION
 ###############################################################################
-
+SUPPORTED_AUDIO_EXTENSIONS = ['.mp3', '.m4a']
 AUDIO_CHUNKS_DIR = "audio_chunks/"
-CHUNK_SPLIT_LENGTH_SECONDS = 10
+CHUNK_SPLIT_LENGTH_SECONDS = 108 #10
 
 ###############################################################################
 ######## LLM CONFIGURATION
