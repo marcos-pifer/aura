@@ -3,6 +3,7 @@ import logging
 import glob
 import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from pathlib import Path
 
@@ -29,32 +30,41 @@ class TranscriptService:
     @log_wrapper(logger)
     def execute(self, audio_file_path: str) -> str:
 
-
-        
         audio_handler = AudioHandler(file_path=Path(audio_file_path))
         audio_handler.execute()
 
+        missing_transcripts = self.get_missing_transcriptions(audio_file_path)
 
-        audio_chuncks_files = []
-        for ext in SUPPORTED_AUDIO_EXTENSIONS:
-            audio_chuncks_files.extend(glob.glob(
-                f"{AUDIO_CHUNKS_DIR}/{audio_handler.file_name}*{ext}"))
-
-        results = []
+        if not missing_transcripts:
+            logger.info("All audio chunks already transcribed. Exiting.")
+            return
+        
         transcripter = Transcripter(model_name="whisper")
-        transcripter.execute(
-            file_paths=audio_chuncks_files,
-            results=results
-        )
+        for file_path in missing_transcripts:
+            result = transcripter.execute(file_path)
+            insert_chunk(result)
 
-        for chunk_info in results:
-            if check_entry_exists(chunk_info.file_name):
-                logger.info(f"{chunk_info.file_name} Already exists in DB.")
-                continue
-
-            insert_chunk(chunk_info)
 
         logger.info("Transcription service completed successfully.")
+
+
+    def get_missing_transcriptions(self, file_path: str):
+
+        file_path_obj = Path(file_path)
+        file_name = file_path_obj.stem
+
+        audio_chunks_files = set()
+        for ext in SUPPORTED_AUDIO_EXTENSIONS:
+            chunk_names = glob.glob(f"{AUDIO_CHUNKS_DIR}/{file_name}*{ext}")
+            for chunk in chunk_names:
+                chunk_name = Path(chunk).stem
+                if check_entry_exists(chunk_name):
+                    logger.debug(f"{chunk} Already exists in DB.")
+                    continue
+                audio_chunks_files.add(chunk)
+            
+        return list(audio_chunks_files)
+        
 
 
 def main():
