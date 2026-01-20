@@ -14,10 +14,12 @@ def mock_logger():
         level = 10
     return DummyLogger()
 
-@patch('rag.rag_service.Chroma')
-@patch('rag.rag_service.OllamaLLM')
-@patch('rag.rag_service.PromptTemplate')
-def test_rag_service_execute(mock_prompt, mock_ollama, mock_chroma, mock_logger):
+@patch('rag.aura_rag.Chroma')
+@patch('rag.aura_rag.PromptTemplate')
+def test_rag_service_execute(mock_prompt, mock_chroma, mock_logger):
+
+    mock_ollama = MagicMock()
+
     # Mock the retriever and chain behavior
     mock_retriever = MagicMock()
     mock_retriever.invoke.return_value = 'mocked context'
@@ -32,6 +34,7 @@ def test_rag_service_execute(mock_prompt, mock_ollama, mock_chroma, mock_logger)
     service.prompt = mock_prompt.from_template.return_value
     service.llm = mock_ollama.return_value
     service.client = mock_chroma.return_value
+    service.retriever = mock_retriever  # Patch retriever directly to avoid real call
 
     # Should not raise
     service.execute('What is the topic?')
