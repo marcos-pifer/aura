@@ -1,6 +1,6 @@
 
-
-
+import os
+os.environ["ONNXRUNTIME_LOG_SEVERITY_LEVEL"] = "3"
 
 ###############################################################################
 ######## VECTOR DATA BASE CONFIGURATION
@@ -37,4 +37,23 @@ OPENAI_LLM_MODEL = "gpt-4.1-nano"
 ######## RAG CONFIGURATION
 ###############################################################################
 
-RETRIEVE_DOCUMENTS = 4
+RETRIEVE_DOCUMENTS = 20
+
+START_OUTPUT_PLACEHOLDER = "[START_OUTPUT]"
+END_OUTPUT_PLACEHOLDER = "[END_OUTPUT]"
+HISTORY_SIZE = 10
+
+TEMPLATE = """
+    You are an assistant helping to answer questions based on lecture transcriptions.
+
+    Use only the provided context from the lecture transcripts to answer the question below.
+    If the answer cannot be found in the context, say "I need more context."
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
+"""
