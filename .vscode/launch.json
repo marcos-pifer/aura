@@ -36,8 +36,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/rag/rag_service.py",
             "args": [
-                "-i", "What is the main topic discussed in the documents?",
-                "-l", "DEBUG"
+                "-i", "Make me a summary of the lecture that talks about transformers.",
+                "-l", "INFO"
             ],
             "console": "integratedTerminal",
             "env": {

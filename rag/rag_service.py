@@ -1,16 +1,18 @@
 import sys
 import logging
 import argparse
+import os
 
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaLLM
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 
 from utils.logger import log_wrapper, get_logger, set_log_level
-from config import DATABASE_NAME, LLM_MODEL
+from config import DATABASE_NAME, LLM_MODEL, OPENAI_LLM_MODEL, RETRIEVE_DOCUMENTS
 
 
 
@@ -43,15 +45,23 @@ class RAGService:
     def __init__(self, logger):
         self.logger = logger
         self.prompt = PromptTemplate.from_template(TEMPLATE)
-        self.llm = OllamaLLM(model=LLM_MODEL)
+        self.llm = self.select_llm()
         self.client = Chroma(persist_directory=DATABASE_NAME)
-        
+    
+    def select_llm(self):
+        llm = None
+        if os.getenv("OPENAI_API_KEY"):
+            llm = ChatOpenAI(model=OPENAI_LLM_MODEL)
+        else:
+            llm = OllamaLLM(model=LLM_MODEL)
+        return llm
+
     @log_wrapper(logger)
     def execute(self, query: str):
-        print("Logger level is now:", logger.level)
+        # print("Logger level is now:", logger.level)
         
         logger.debug('fetching client as retriever')
-        retriever = self.client.as_retriever(search_kwargs={"k": 4}) #search_kwargs={"k": 4}
+        retriever = self.client.as_retriever(search_kwargs={"k": RETRIEVE_DOCUMENTS})
 
 
         chain = self.prompt | self.llm
@@ -64,6 +74,9 @@ class RAGService:
             'context': lecture_notes
             ,'question':query
         })
+
+        response = self.extract_response(response)
+
         
         logger.info(f"""
         {START_OUTPUT_PLACEHOLDER}
@@ -71,6 +84,11 @@ class RAGService:
         {END_OUTPUT_PLACEHOLDER}
         """
         )
+    
+    def extract_response(self, response):
+        if hasattr(response, "text"):
+            return getattr(response, "text")
+        return response
         
 
 def main():
