@@ -40,7 +40,8 @@ class TranscriptService:
             return
         
         transcripter = Transcripter(model_name="whisper")
-        for file_path in missing_transcripts:
+        for idx,file_path in enumerate(missing_transcripts):
+            logger.debug(f"File: {idx+1}/{len(missing_transcripts)}")
             result = transcripter.execute(file_path)
             insert_chunk(result)
 
