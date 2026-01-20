@@ -45,3 +45,11 @@ def check_entry_exists(file_name):
         exists = True
 
     return exists
+
+
+@log_wrapper(logger)
+def remove_entry(file_name):
+    logger.debug(f'Connecting to ChromaDB at {DATABASE_NAME}, table {TABLE_NAME}')
+    client = Chroma(persist_directory=DATABASE_NAME)
+    client.delete(ids=[file_name])
+    logger.info(f'Entry {file_name} removed from ChromaDB')

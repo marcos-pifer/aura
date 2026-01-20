@@ -47,7 +47,8 @@ TEMPLATE = """
     You are an assistant helping to answer questions based on lecture transcriptions.
 
     Use only the provided context from the lecture transcripts to answer the question below.
-    If the answer cannot be found in the context, tell the topics the lectures covered 
+    If the answer cannot be found in the context, say that you could not find
+    what they are asking for and mention the topics the lectures covered 
     so the user can rewrite the question with more specific details.
 
 Context:

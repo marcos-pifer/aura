@@ -37,8 +37,10 @@ class AuraRAG:
     def select_llm(self):
         llm = None
         if os.getenv("OPENAI_API_KEY"):
+            print('Using OpenAI LLM model')
             llm = ChatOpenAI(model=OPENAI_LLM_MODEL)
         else:
+            print('Using LOCAL Ollama LLM model')
             llm = OllamaLLM(model=LLM_MODEL)
         return llm
 

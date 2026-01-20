@@ -19,7 +19,7 @@ def main():
 
     print(f"RAG chat started. Type 'exit' to quit. Keeping last {HISTORY_SIZE} turns in history.")
     while True:
-        
+        print("===========================================================")
         user_input = input("You: ")
         if user_input.strip().lower() in {"exit", "quit"}:
             print("Exiting chat.")
