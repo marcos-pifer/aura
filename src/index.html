@@ -4,13 +4,25 @@
     <meta charset="UTF-8" />
     <title>Aura | AI Audio Transcriptor</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=chevron_left,chevron_right,close,delete,error,menu,send,settings,upload" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=add_circle,check_circle,chevron_left,chevron_right,close,compress,delete,edit,edit_off,error,fact_check,help,menu,send,settings,sync,upload,visibility,visibility_off" />
     <link rel="stylesheet" href="./frontend/styles/index.css" />
   </head>
 
   <body>
+    <div id="startup-overlay" class="startup-overlay">
+      <div class="startup-content">
+        <h1 class="title">AURA</h1>
+        <div class="loading-spinner"></div>
+        <div class="terminal-window">
+          <div id="server-logs" class="logs-content">
+
+          </div>
+        </div>
+        <p class="status-text">Starting Aura Backend...</p>
+      </div>
+    </div>
     <!-- Main Body -->
-    <div id="aura-main" class="aura-container">
+    <div id="aura-main" class="aura-container hidden">
       <div id="aura-sidebar" class="sidebar">
         <div class="unselectable sidebar-header">
           <h2 class="title">AURA</h2>
@@ -23,7 +35,7 @@
         </div>
         <div class="unselectable sidebar-footer">
           <div class="sidebar-footer-text">
-            <span>© 2026 · Aura v0.1.0</span>
+            <span id="version-display">© 2026 · Aura</span>
             <span>Made with ❤️ and ☕</span>
           </div>
           <div>
@@ -60,7 +72,10 @@
       </div>
       <div class="input-group">
         <label>API Key</label>
-        <input type="password" id="api-key" placeholder="sk-...">
+        <div class="password-wrapper">
+          <input type="password" id="api-key" placeholder="sk-...">
+          <span id="toggle-api-key" class="material-symbols-outlined eye-icon">visibility</span>
+        </div>
       </div>
       <div class="row-group">
         <div class="input-group half">
@@ -73,9 +88,9 @@
         </div>
       </div>
       <div id="settings-error-msg" class="error-msg hidden">
-        All fields require an input before saving.
-      </div>
-      <div class="modal-footer">
+        </div>
+      <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 1rem;">
+        <button id="test-connection-btn" class="save-btn" style="background-color: var(--dusty-grape);">Test</button>
         <button id="save-settings-btn" class="save-btn">Save Settings</button>
       </div>
     </div>
@@ -110,6 +125,6 @@
     <span id="toast-message">Only .mp3 files are supported!</span>
   </div>
 
-    <script type="text/javascript" src="./frontend/renderer.js"></script>
+  <script type="text/javascript" src="./frontend/renderer.js"></script>
   </body>
 </html>

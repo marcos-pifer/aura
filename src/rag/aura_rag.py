@@ -25,24 +25,37 @@ logger = get_logger(MODULE, logging.INFO)
 
 class AuraRAG:
 
-    def __init__(self, logger):
+    def __init__(self, logger, config=None):
         self.logger = logger
+        self.config = config
         self.prompt = PromptTemplate.from_template(TEMPLATE)
         self.llm = self.select_llm()
         self.client = Chroma(persist_directory=DATABASE_NAME)
-        self.retriever = self.client.as_retriever(
-            search_kwargs={"k": RETRIEVE_DOCUMENTS})
+        self.retriever = self.client.as_retriever(search_kwargs={"k": RETRIEVE_DOCUMENTS})
     
     def select_llm(self):
-        llm = None
-        if os.getenv("OPENAI_API_KEY"):
-            print('Using OpenAI LLM model')
-            llm = ChatOpenAI(model=OPENAI_LLM_MODEL)
+        # Prioritize the passed config
+        if self.config and self.config.api_key:
+            print('Using OpenAI LLM model (Dynamic Config)')
+            return ChatOpenAI(
+                model=OPENAI_LLM_MODEL,
+                api_key=self.config.api_key,
+                temperature=self.config.temperature or 0.7,
+                max_tokens=self.config.max_tokens or 1024
+                # base_url=self.config.api_url
+            )
         else:
-            from langchain_ollama import OllamaLLM
-            print('Using LOCAL Ollama LLM model')
-            llm = OllamaLLM(model=LLM_MODEL)
-        return llm
+            return self._get_local_llm()
+        
+    def _get_local_llm(self):
+        from langchain_ollama import OllamaLLM
+        print(f'Using local Ollama LLM model: {LLM_MODEL}')
+        return OllamaLLM(model=LLM_MODEL)
+
+    def switch_to_local(self):
+        """Forces the RAG instance to switch to the local Ollama model."""
+        self.logger.warning("Switching RAG to locally hosted model due to failure.")
+        self.llm = self._get_local_llm()
 
     @log_wrapper(logger)
     def execute(self, query: str):

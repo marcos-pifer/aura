@@ -15,8 +15,8 @@ MODULE = __file__.split('.')[0].split('/')[-1]
 logger = get_logger(MODULE, logging.INFO)
 
 class OpenAIWhisper:
-    def __init__(self):
-        self.client = OpenAI()
+    def __init__(self, api_key=None):
+        self.client = OpenAI(api_key=api_key)
 
     def transcribe(self, file_path: str):
         with open(file_path, "rb") as f:
@@ -27,12 +27,12 @@ class OpenAIWhisper:
 
         return {'text': result.text}
 
-def load_whisper_model():
+def load_whisper_model(api_key=None):
     import whisper
     return whisper.load_model(WHISPER_MODEL)
 
-def load_openai_model():
-    return OpenAIWhisper()
+def load_openai_model(api_key=None):
+    return OpenAIWhisper(api_key=api_key)
 
 
 models = {
@@ -52,9 +52,9 @@ class ChunkTranscriptInfo:
 class Transcripter:
 
     @log_wrapper(logger)
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str, api_key: str = None):
         self.model_name = model_name
-        self.model = models[model_name]()
+        self.model = models[model_name](api_key=api_key)
 
     @log_wrapper(logger)
     def execute(self, file_path):

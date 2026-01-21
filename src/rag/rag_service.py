@@ -13,7 +13,6 @@ logger = get_logger(MODULE, logging.INFO)
 
 
 def main():
-
     parser = argparse.ArgumentParser(description=f"{MODULE} command line arguments")
     parser.add_argument(
         '-i','--input', type=str, required=True
