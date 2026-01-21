@@ -21,6 +21,9 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: perform linux setup
+      run: bash .github/workflows/setup_ci.sh
+
     - name: Install dependencies
       run: pip install -r requirements_dev.txt
 

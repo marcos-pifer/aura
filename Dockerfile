@@ -1,5 +1,7 @@
 FROM python:3.12.3-slim
 
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+
 # Set working directory
 WORKDIR /app
 COPY requirements_prod.txt /app/requirements_prod.txt
