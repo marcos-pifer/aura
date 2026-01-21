@@ -6,6 +6,8 @@ if [ -z "$OPENAI_API_KEY" ]; then
     exit 1
 fi
 
+npm install
+
 docker build -t aura .
 
 docker run -it --rm \

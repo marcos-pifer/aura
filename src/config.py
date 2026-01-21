@@ -10,6 +10,7 @@ DATABASE_NAME = "vectorDB"
 TABLE_NAME = "aura"
 SENTENCE_TRANSFORMER_MODEL = "all-MiniLM-L6-v2"
 
+
 ###########################################################################
 ######## TRANSCRIPT CONFIGURATION
 ###########################################################################
@@ -17,10 +18,10 @@ SENTENCE_TRANSFORMER_MODEL = "all-MiniLM-L6-v2"
 WHISPER_MODEL = "small"
 OPENAI_TRANSCRIPTION_MODEL = "gpt-4o-transcribe"
 
+
 ###############################################################################
 ######## AUDIO HANDLER CONFIGURATION
 ###############################################################################
-
 SUPPORTED_AUDIO_EXTENSIONS = ['.mp3', '.m4a']
 AUDIO_CHUNKS_DIR = "audio_chunks/"
 CHUNK_SPLIT_LENGTH_SECONDS = 108 #10
@@ -32,6 +33,7 @@ CHUNK_SPLIT_LENGTH_SECONDS = 108 #10
 LLM_MODEL = "llama3:8b"
 OPENAI_LLM_MODEL = "gpt-4.1-nano"
 
+
 ###############################################################################
 ######## RAG CONFIGURATION
 ###############################################################################
@@ -41,6 +43,8 @@ RETRIEVE_DOCUMENTS = 20
 START_OUTPUT_PLACEHOLDER = "[START_OUTPUT]"
 END_OUTPUT_PLACEHOLDER = "[END_OUTPUT]"
 HISTORY_SIZE = 10
+
+
 
 TEMPLATE = """
     You are an assistant helping to answer questions based on lecture transcriptions.
