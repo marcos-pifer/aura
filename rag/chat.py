@@ -28,7 +28,7 @@ def main():
         response = rag.chat(user_input, list(history))
         print(f"AuraRAG: {response}")
 
-        if "I need more context." in response:
+        if "Give me more context" in response:
             continue
         history.append({'user': user_input, 'assistant': response})
 

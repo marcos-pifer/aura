@@ -8,7 +8,6 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from langchain_chroma import Chroma
-from langchain_ollama import OllamaLLM
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 
@@ -40,6 +39,7 @@ class AuraRAG:
             print('Using OpenAI LLM model')
             llm = ChatOpenAI(model=OPENAI_LLM_MODEL)
         else:
+            from langchain_ollama import OllamaLLM
             print('Using LOCAL Ollama LLM model')
             llm = OllamaLLM(model=LLM_MODEL)
         return llm
