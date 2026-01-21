@@ -16,6 +16,7 @@ SENTENCE_TRANSFORMER_MODEL = "all-MiniLM-L6-v2"
 ###########################################################################
 
 WHISPER_MODEL = "small"
+OPENAI_TRANSCRIPTION_MODEL = "gpt-4o-transcribe"
 
 
 ###############################################################################

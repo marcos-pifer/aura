@@ -1,10 +1,11 @@
 from datetime import datetime
 import logging
-import whisper
 from utils.logger import log_wrapper, get_logger, set_log_level
 from dataclasses import dataclass
-from config import WHISPER_MODEL
+from config import WHISPER_MODEL, OPENAI_TRANSCRIPTION_MODEL
 from pathlib import Path
+from openai import OpenAI
+
 
 import warnings
 warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using FP32 instead")
@@ -13,11 +14,30 @@ warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using F
 MODULE = __file__.split('.')[0].split('/')[-1]
 logger = get_logger(MODULE, logging.INFO)
 
+class OpenAIWhisper:
+    def __init__(self):
+        self.client = OpenAI()
+
+    def transcribe(self, file_path: str):
+        with open(file_path, "rb") as f:
+            result = self.client.audio.transcriptions.create(
+                model=OPENAI_TRANSCRIPTION_MODEL,
+                file=f
+            )
+
+        return {'text': result.text}
+
 def load_whisper_model():
+    import whisper
     return whisper.load_model(WHISPER_MODEL)
 
+def load_openai_model():
+    return OpenAIWhisper()
+
+
 models = {
-    "whisper": load_whisper_model
+    "whisper": load_whisper_model, 
+    "openai": load_openai_model
 }
 
 
