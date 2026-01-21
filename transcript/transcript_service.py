@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 import glob
@@ -39,7 +40,13 @@ class TranscriptService:
             logger.info("All audio chunks already transcribed. Exiting.")
             return
         
-        transcripter = Transcripter(model_name="whisper")
+        if os.getenv("OPENAI_API_KEY"):
+            print('Using OpenAI LLM model')
+            transcripter = Transcripter(model_name="openai")
+        else:
+            transcripter = Transcripter(model_name="whisper")
+            
+
         for idx,file_path in enumerate(missing_transcripts):
             logger.debug(f"File: {idx+1}/{len(missing_transcripts)}")
             result = transcripter.execute(file_path)

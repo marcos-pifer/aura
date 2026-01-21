@@ -6,3 +6,5 @@ __pycache__/
 vectorDB/
 *.mp3
 *.m4a
+/clean_venv
+*DELETE_ME.py

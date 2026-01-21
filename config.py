@@ -16,6 +16,7 @@ SENTENCE_TRANSFORMER_MODEL = "all-MiniLM-L6-v2"
 ###########################################################################
 
 WHISPER_MODEL = "small"
+OPENAI_TRANSCRIPTION_MODEL = "gpt-4o-transcribe"
 
 
 ###############################################################################
@@ -43,13 +44,16 @@ START_OUTPUT_PLACEHOLDER = "[START_OUTPUT]"
 END_OUTPUT_PLACEHOLDER = "[END_OUTPUT]"
 HISTORY_SIZE = 10
 
+
+
 TEMPLATE = """
     You are an assistant helping to answer questions based on lecture transcriptions.
 
     Use only the provided context from the lecture transcripts to answer the question below.
     If the answer cannot be found in the context, say that you could not find
     what they are asking for and mention the topics the lectures covered 
-    so the user can rewrite the question with more specific details.
+    so the user can rewrite the question with more specific details. Say in the
+    end "Give me more context".
 
 Context:
 {context}
