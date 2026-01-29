@@ -12,6 +12,7 @@ docker run -it --rm \
     -v "$PWD/data_base:/app/data_base" \
     -v "$PWD/rag:/app/rag" \
     -v "$PWD/transcript:/app/transcript" \
+    -v "$PWD/inputs:/app/inputs" \
     -v "$PWD/utils:/app/utils" \
     -v "$PWD/vectorDB:/app/vectorDB" \
     -v "$PWD/config.py:/app/config.py" \

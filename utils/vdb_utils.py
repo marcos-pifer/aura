@@ -3,7 +3,7 @@ from langchain_chroma import Chroma
 import logging
 from dataclasses import asdict
 
-from data_base.vdb_setup import DATABASE_NAME, TABLE_NAME
+from utils.vdb_setup import DATABASE_NAME, TABLE_NAME
 from utils.logger import get_logger, log_wrapper
 from config import DATABASE_NAME
 
